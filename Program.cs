@@ -61,7 +61,7 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 });
-
+builder.Configuration["Stripe:SecretKey"];
 
 var app = builder.Build();
 
