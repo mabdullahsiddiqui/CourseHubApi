@@ -8,7 +8,37 @@ This guide will walk you through deploying your CourseHub API to Azure App Servi
 2. **GitHub Account**: Your code should be in a GitHub repository
 3. **Azure CLI** (optional): For easier Azure management
 
-## Step 1: Create Azure App Service
+## 🚨 Quota Issues? Try These Alternatives First
+
+If you encounter quota limitations, try these options in order:
+
+### Option A: Azure Portal (Recommended for Quota Issues)
+
+1. Go to [Azure Portal](https://portal.azure.com)
+2. Click "Create a resource"
+3. Search for "**Web App**" (not App Service)
+4. Click "Create"
+5. Fill in the details:
+   - **Name**: `coursehub-api`
+   - **Publish**: Code
+   - **Runtime stack**: .NET 8 (LTS)
+   - **Operating System**: Windows
+   - **Region**: Choose your preferred region
+   - **App Service Plan**: **F1 (Free)** - This usually has higher quota limits
+6. Click "Review + create" then "Create"
+
+### Option B: Azure Static Web Apps (Free Tier)
+
+1. Go to [Azure Portal](https://portal.azure.com)
+2. Search for "Static Web Apps"
+3. Click "Create"
+4. Fill in:
+   - **Name**: `coursehub-api`
+   - **Region**: Choose your region
+   - **Build Details**: Skip for now
+5. After creation, get the deployment token from "Manage deployment tokens"
+
+## Step 1: Create Azure App Service (If Quota Allows)
 
 ### Option A: Using Azure Portal
 
@@ -35,8 +65,8 @@ az login
 # Create resource group
 az group create --name CourseHubRG --location eastus
 
-# Create App Service Plan
-az appservice plan create --name CourseHubPlan --resource-group CourseHubRG --sku B1
+# Create App Service Plan (Use F1 for free tier if B1 fails)
+az appservice plan create --name CourseHubPlan --resource-group CourseHubRG --sku F1
 
 # Create App Service
 az webapp create --name coursehub-api --resource-group CourseHubRG --plan CourseHubPlan --runtime "DOTNETCORE:8.0"
@@ -119,7 +149,24 @@ git push
 2. Test the Swagger UI: `https://your-app-name.azurewebsites.net/swagger`
 3. Test the API endpoints
 
-## Troubleshooting
+## 🔧 Troubleshooting Quota Issues
+
+### If You Get Quota Errors:
+
+1. **Request Quota Increase**:
+   - Go to Azure Portal → Subscriptions → Your subscription → Usage + quotas
+   - Find "App Service Plans"
+   - Click "Request increase"
+   - Request 1 Basic VM for your region
+
+2. **Use Free Tier**:
+   - Try creating with F1 (Free) tier instead of B1
+   - Free tier has different quota limits
+
+3. **Alternative Services**:
+   - Azure Static Web Apps (free tier)
+   - Azure Container Instances
+   - Azure Functions
 
 ### Common Issues
 
