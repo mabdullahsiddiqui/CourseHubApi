@@ -1,0 +1,184 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CourseHubApi</name>
+    </assembly>
+    <members>
+        <member name="M:CourseHubApi.Controllers.AuthController.Register(CourseHubApi.DTOs.RegisterDto)">
+            <summary>
+            Registers a new user.
+            </summary>
+            <param name="dto">The registration details (FullName, Email, Password, Role).</param>
+            <returns>
+            200 OK if registration is successful.<br/>
+            400 BadRequest if the email already exists.
+            </returns>
+            <response code="200">User registered successfully.</response>
+            <response code="400">Email already exists.</response>
+        </member>
+        <member name="M:CourseHubApi.Controllers.AuthController.Login(CourseHubApi.DTOs.LoginDto)">
+            <summary>
+            Authenticates a user and returns a JWT token.
+            </summary>
+            <param name="dto">The login details (Email, Password).</param>
+            <returns>
+            200 OK with JWT token if credentials are valid.<br/>
+            401 Unauthorized if credentials are invalid.
+            </returns>
+            <response code="200">Returns a JWT token.</response>
+            <response code="401">Invalid credentials.</response>
+        </member>
+        <member name="M:CourseHubApi.Controllers.CourseController.GetCourses">
+            <summary>
+            Retrieves all courses.
+            </summary>
+            <remarks>
+            Returns a list of all available courses with their basic information and instructor name.
+            </remarks>
+            <response code="200">Returns the list of courses</response>
+        </member>
+        <member name="M:CourseHubApi.Controllers.CourseController.GetCourse(System.Int32)">
+            <summary>
+            Retrieves a course by its ID.
+            </summary>
+            <param name="id">The ID of the course to retrieve.</param>
+            <returns>The course with the specified ID.</returns>
+            <response code="200">Returns the course</response>
+            <response code="404">If the course is not found</response>
+        </member>
+        <member name="M:CourseHubApi.Controllers.CourseController.CreateCourse(CourseHubApi.DTOs.CourseDto)">
+            <summary>
+            Creates a new course.
+            </summary>
+            <param name="dto">The course data transfer object containing course details.</param>
+            <remarks>
+            Only users with the Instructor or Admin role can create a course.
+            </remarks>
+            <response code="200">Returns the created course</response>
+            <response code="401">If the user is not authenticated</response>
+            <response code="403">If the user does not have permission</response>
+        </member>
+        <member name="M:CourseHubApi.Controllers.CourseController.UpdateCourse(System.Int32,CourseHubApi.DTOs.CourseDto)">
+            <summary>
+            Updates an existing course.
+            </summary>
+            <param name="id">The ID of the course to update.</param>
+            <param name="dto">The updated course data.</param>
+            <remarks>
+            Only the instructor who owns the course or an admin can update it.
+            </remarks>
+            <response code="200">Returns the updated course</response>
+            <response code="401">If the user is not authenticated</response>
+            <response code="403">If the user does not have permission</response>
+            <response code="404">If the course is not found</response>
+        </member>
+        <member name="M:CourseHubApi.Controllers.CourseController.DeleteCourse(System.Int32)">
+            <summary>
+            Deletes a course.
+            </summary>
+            <param name="id">The ID of the course to delete.</param>
+            <remarks>
+            Only the instructor who owns the course or an admin can delete it.
+            </remarks>
+            <response code="200">If the course was deleted successfully</response>
+            <response code="401">If the user is not authenticated</response>
+            <response code="403">If the user does not have permission</response>
+            <response code="404">If the course is not found</response>
+        </member>
+        <member name="M:CourseHubApi.Controllers.EnrollmentController.Enroll(CourseHubApi.DTOs.EnrollDto)">
+            <summary>
+            Enroll the authenticated student in a course.
+            </summary>
+            <remarks>
+            Only users with the "Student" role can access this endpoint.
+            </remarks>
+            <param name="dto">The enrollment details (CourseId).</param>
+            <returns>
+            200 OK if enrollment is successful.<br/>
+            400 BadRequest if already enrolled.
+            </returns>
+            <response code="200">Enrolled successfully.</response>
+            <response code="400">Already enrolled.</response>
+        </member>
+        <member name="M:CourseHubApi.Controllers.EnrollmentController.GetMyEnrollments">
+            <summary>
+            Get all enrollments for the authenticated student.
+            </summary>
+            <remarks>
+            Only users with the "Student" role can access this endpoint.
+            </remarks>
+            <returns>
+            200 OK with a list of the student's enrollments.
+            </returns>
+            <response code="200">Returns the student's enrollments.</response>
+        </member>
+        <member name="M:CourseHubApi.Controllers.EnrollmentController.GetAllEnrollments">
+            <summary>
+            Get all enrollments in the system (Admin only).
+            </summary>
+            <remarks>
+            Only users with the "Admin" role can access this endpoint.
+            </remarks>
+            <returns>
+            200 OK with a list of all enrollments.
+            </returns>
+            <response code="200">Returns all enrollments.</response>
+        </member>
+        <member name="T:CourseHubApi.Controllers.PaymentsController">
+            <summary>
+            Handles payment-related operations.
+            </summary>
+        </member>
+        <member name="M:CourseHubApi.Controllers.PaymentsController.CreatePaymentIntent(CourseHubApi.Controllers.PaymentRequestDto)">
+            <summary>
+            Creates a Stripe PaymentIntent for processing a payment.
+            </summary>
+            <param name="paymentRequest">The payment request containing the amount and currency.</param>
+            <returns>
+            Returns the client secret for the created PaymentIntent.
+            </returns>
+            <response code="200">Returns the client secret for the PaymentIntent.</response>
+            <response code="400">If the request is invalid.</response>
+        </member>
+        <member name="T:CourseHubApi.Controllers.PaymentRequestDto">
+            <summary>
+            DTO for payment request.
+            </summary>
+        </member>
+        <member name="P:CourseHubApi.Controllers.PaymentRequestDto.Amount">
+            <summary>
+            The amount to be charged (in major currency units, e.g., dollars).
+            </summary>
+        </member>
+        <member name="P:CourseHubApi.Controllers.PaymentRequestDto.Currency">
+            <summary>
+            The currency for the payment (e.g., "usd").
+            </summary>
+        </member>
+        <member name="M:CourseHubApi.Controllers.TestController.GetSecureData">
+            <summary>
+            Returns secure data for authenticated users.
+            </summary>
+            <remarks>
+            This endpoint requires authentication. It returns a message indicating the user is authenticated along with their user ID.
+            </remarks>
+            <returns>
+            200 OK with a message containing the authenticated user's ID.
+            </returns>
+            <response code="200">Returns the authenticated user's information.</response>
+            <response code="401">If the user is not authenticated.</response>
+        </member>
+        <member name="T:CourseHubApi.Migrations.InitialCreate">
+            <inheritdoc />
+        </member>
+        <member name="M:CourseHubApi.Migrations.InitialCreate.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:CourseHubApi.Migrations.InitialCreate.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:CourseHubApi.Migrations.InitialCreate.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+    </members>
+</doc>
