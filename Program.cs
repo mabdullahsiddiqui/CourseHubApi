@@ -65,8 +65,22 @@ builder.Services.AddSwaggerGen(c =>
 
 StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowLocalhost5173",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:5173")
+                  .AllowAnyHeader()
+                  .AllowAnyMethod()
+                  .AllowCredentials(); // optional, if using cookies
+        });
+});
+
+
 var app = builder.Build();
 
+app.UseCors("AllowLocalhost5173");
 // Middleware Order Matters
 app.UseSwagger();
 app.UseSwaggerUI();
