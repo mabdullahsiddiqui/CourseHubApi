@@ -10,10 +10,11 @@
 using System;
 using System.Reflection;
 
+[assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("51ba402e-a4ff-4f23-b1d0-da2aa895c06b")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("CourseHubApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+bff9981213b7d49e9628e5acbd15c204afb4d128")]
 [assembly: System.Reflection.AssemblyProductAttribute("CourseHubApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CourseHubApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
