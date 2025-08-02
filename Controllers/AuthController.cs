@@ -27,20 +27,27 @@ namespace CourseHubApi.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterDto dto)
         {
-            if (await _context.Users.AnyAsync(u => u.Email == dto.Email))
-                return BadRequest("Email already exists.");
-
-            var user = new User
+            try
             {
-                FullName = dto.FullName,
-                Email = dto.Email,
-                PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password),
-                Role = dto.Role
-            };
+                if (await _context.Users.AnyAsync(u => u.Email == dto.Email))
+                    return BadRequest("Email already exists.");
 
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
-            return Ok("User registered successfully.");
+                var user = new User
+                {
+                    FullName = dto.FullName,
+                    Email = dto.Email,
+                    PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password),
+                    Role = dto.Role
+                };
+
+                _context.Users.Add(user);
+                await _context.SaveChangesAsync();
+                return Ok("User registered successfully.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = "Internal server error", details = ex.Message });
+            }
         }
 
         [HttpPost("login")]
